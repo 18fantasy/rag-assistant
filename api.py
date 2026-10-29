@@ -12,7 +12,9 @@ body = {
 try:
     resp = requests.post(地址, json=body, headers=headers, timeout = 30)
     resp.raise_for_status()
-    print(resp.json()["choices"][0]["message"]["content"])
+    数据 = resp.json()
+    print(数据["choices"][0]["message"]["content"])
+    print(数据["usage"])
 except requests.exceptions.Timeout:
     print("超时：对方没在规定时间内响应，可稍后重试")
 except requests.exceptions.ConnectionError:
