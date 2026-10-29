@@ -1,0 +1,15 @@
+# 虚拟环境（PyCharm 建的，不上传）
+.venv/
+venv/
+
+# 编辑器与 Python 缓存
+.idea/
+.vscode/
+__pycache__/
+*.pyc
+
+# 检索产物（能重新生成，不入库）
+*.db
+*.jsonl
+.env
+_backup_*.py
