@@ -23,13 +23,14 @@ def 问模型(问题, top):
         {"role": "system", "content": "只依据给定的材料回答。每条结论后用 [编号] 标注出处。材料里没有的，就回答“材料里没有”。"},
         {"role": "user", "content": f"材料：\n{材料}\n\n问题：{问题}"},
     ]
-    body = {"model": "glm-4-flash", "messages": messages, "max_tokens": 400}
+    body = {"model": "glm-4-flash", "messages": messages, "max_tokens": 400, "temperature": 0}
     resp = requests.post(地址, json=body, headers=headers, timeout=60)
     resp.raise_for_status()
     return resp.json()["choices"][0]["message"]["content"]
-问题 = "三号现在有哪些已知问题？"
-top = 检索(问题)
-print("\n===== 材料 top-3 =====")
-print(拼材料(top)[:600])
-print("\n===== 答案 =====")
-print(问模型(问题, top))
+if __name__ == "__main__":
+    问题 = "三号现在有哪些已知问题？"
+    top = 检索(问题)
+    print("\n===== 材料 top-3 =====")
+    print(拼材料(top)[:600])
+    print("\n===== 答案 =====")
+    print(问模型(问题, top))

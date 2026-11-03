@@ -23,7 +23,7 @@ def 检索(问题, k=3):
     表 = []
     for 块 in 全部块:
         分 = sum(权重[片] for 片 in 片段s if 片 in 块["text"])
-        表.append((round(分, 2), 块))
+        表.append((分, 块))
     表.sort(key=lambda x: x[0], reverse=True)
     结果, 见过 = [], set()
     for 分, 块 in 表:
@@ -35,8 +35,9 @@ def 检索(问题, k=3):
         if len(结果) == k:
             break
     return 结果
-for 问题 in ["三号切块一共多少块？块长多少？", "记账本的月度统计怎么算"]:
-    print(f"\n=== {问题} ===")
-    for 分, 块 in 检索(问题):
-        print(f'{分:7.2f}  {块["file"]} 第 {块["idx"]+1} 块')
-        print("      ", 块["text"][:60].replace("\n", " "))
+if __name__ == "__main__":
+    for 问题 in ["三号切块一共多少块？块长多少？", "记账本的月度统计怎么算"]:
+        print(f"\n=== {问题} ===")
+        for 分, 块 in 检索(问题):
+            print(f'{分:7.2f}  {块["file"]} 第 {块["idx"]+1} 块')
+            print("      ", 块["text"][:60].replace("\n", " "))
