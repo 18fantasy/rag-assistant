@@ -1,13 +1,16 @@
 import os
 import requests
 key = os.environ["ZHIPU_API_KEY"]
-
+if not key:
+    print("缺少环境变量 ZHIPU_API_KEY：请先在系统设置，再重开终端/PyCharm")
+    raise SystemExit(1)
 地址 = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
 headers = {"Authorization": "Bearer " + key}
 body = {
     "model":"glm-4-flash",
     "messages": [{"role": "user", "content": "用一句话解释什么是 RAG"}],
     "max_tokens": 200,
+    "temperature": 0
 }
 try:
     resp = requests.post(地址, json=body, headers=headers, timeout = 30)

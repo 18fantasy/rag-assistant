@@ -20,7 +20,10 @@ def 拼材料(top):
 def 问模型(问题, top):
     材料 = 拼材料(top)
     messages = [
-        {"role": "system", "content": "只依据给定的材料回答。每条结论后用 [编号] 标注出处。材料里没有的，就回答“材料里没有”。"},
+        {"role": "system", "content": """只依据给定的材料回答。
+材料固定为 3 条，编号是 1、2、3。
+先把答案写完整（该说的都要说），然后在每句结论后面用 [1] 或 [2] 或 [3] 标出处，格式只许这一种。
+材料里找不到答案，就只回答：材料里没有。"""},
         {"role": "user", "content": f"材料：\n{材料}\n\n问题：{问题}"},
     ]
     body = {"model": "glm-4-flash", "messages": messages, "max_tokens": 400, "temperature": 0}

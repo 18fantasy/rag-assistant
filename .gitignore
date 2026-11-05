@@ -13,3 +13,6 @@ __pycache__/
 *.jsonl
 .env
 _backup_*.py
+
+# PyCharm 模板文件（每次新建项目自动生成，与项目无关）
+main.py

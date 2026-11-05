@@ -2,7 +2,7 @@ import os
 thing1 = []
 road = r"C:\Users\2\Desktop\py_road"
 for root, dirs, files in os.walk(road):
-    dirs[:] = [d for d in dirs if  d not in (".git", "__pycache__", ".venv", "_backup", "_drafts")]
+    dirs[:] = [d for d in dirs if  d not in (".git", "__pycache__", ".venv", "_backup", "_drafts", "eval")]
     for name in files:
         if name.endswith(".md"):
             thing1.append(os.path.join(root, name))
