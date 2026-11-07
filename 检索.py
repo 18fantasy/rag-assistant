@@ -4,7 +4,7 @@ spec = importlib.util.spec_from_file_location(
     "三号", r"C:/Users/2/Desktop/py_road/projects/rag-assistant/项目三号.py")
 三号 = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(三号)
-全部块 = 三号.全部块
+全部块 = 三号.建索引(三号.根目录)[0]
 print("载入块数:", len(全部块))
 停用 = {"多少", "一共", "什么", "怎么", "是哪", "哪些", "这个", "可以", "如何", "为什", "么算", "计怎"}
 def 切片段(问题):
