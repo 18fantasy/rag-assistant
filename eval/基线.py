@@ -1,18 +1,20 @@
 import json
 import random
 import importlib.util
+根 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 def 加载(名字, 路径):
     spec = importlib.util.spec_from_file_location(名字, 路径)
     模块 = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(模块)
     return 模块
-检索模块 = 加载("检索模块", r"C:/Users/2/Desktop/py_road/projects/rag-assistant/检索.py")
-问答模块 = 加载("问答模块", r"C:/Users/2/Desktop/py_road/projects/rag-assistant/问答.py")
+检索模块 = 加载("检索模块", os.path.join(根, "检索.py"))
+问答模块 = 加载("问答模块", os.path.join(根, "问答.py"))
 全部块 = 检索模块.全部块
 问模型 = 问答模块.问模型
 拼材料 = 问答模块.拼材料
 
-with open(r"C:/Users/2/Desktop/py_road/projects/rag-assistant/评测题.json", encoding="utf-8") as f:
+with open(os.path.join(根, "评测题.json"), encoding="utf-8") as f:
     题目 = json.load(f)
 
 random.seed(42)
@@ -54,6 +56,6 @@ for 题 in 题目:
 - 【标准要点】：{'；'.join(题['要点'])}
 """)
 
-with open(r"C:/Users/2/Desktop/py_road/projects/rag-assistant/基线结果.md", "w", encoding="utf-8") as f:
+with open(os.path.join(根, "基线结果.md"), "w", encoding="utf-8") as f:
     f.write("# 三号评测 · 基线对照（v0.1 同一批 20 题）\n\n- 基线A：不给材料（纯训练记忆）\n- 基线B：随机 3 块（不按相关性）\n- 对照：检索 top-3（正式成绩 16/20）\n" + "\n".join(行s))
 print("基线跑完，已写入 基线结果.md")

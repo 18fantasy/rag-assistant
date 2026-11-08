@@ -1,6 +1,7 @@
 import os
 import importlib.util
 import requests
+这里 =os.path.dirname(os.path.abspath(__file__))
 key = os.environ.get("ZHIPU_API_KEY")
 if not key:
     print("缺少环境变量 ZHIPU_API_KEY：请先在系统设置，再重开终端/PyCharm")
@@ -8,7 +9,7 @@ if not key:
 地址 = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
 headers = {"Authorization": "Bearer " + key}
 spec = importlib.util.spec_from_file_location(
-    "检索模块", r"C:\Users\2\Desktop\py_road\projects\rag-assistant\检索.py")
+    "检索模块", os.path.join(这里,"检索.py"))
 检索模块 = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(检索模块)
 检索 = 检索模块.检索

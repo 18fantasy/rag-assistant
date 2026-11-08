@@ -3,7 +3,8 @@ import os
 key = os.environ["ZHIPU_API_KEY"]
 url = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
 headers = {"Authorization": "Bearer " + key}
-with open(r"C:\Users\2\Desktop\py_road\进度.md","r", encoding = "utf-8") as f:
+这里 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+with open(os.path.join(这里, "进度.md"), "r", encoding="utf-8") as f:
     文本 = f.read()
     段落们 = 文本.split("\n\n")
     命中 = [d for d in 段落们 if "4799" in d]

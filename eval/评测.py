@@ -1,4 +1,5 @@
 import sys
+import os
 import json
 import datetime
 import importlib.util
@@ -11,7 +12,7 @@ def 加载(名字, 路径):
     return 模块
 
 
-根 = r"C:/Users/2/Desktop/py_road/projects/rag-assistant"
+根 = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 版本 = sys.argv[1] if len(sys.argv) > 1 else "v0.1"
 题库 = {"v0.1": "评测题.json", "v0.2": "评测题_v02.json"}[版本]
 

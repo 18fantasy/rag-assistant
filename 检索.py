@@ -1,7 +1,10 @@
 import importlib.util
 import math
+import os
+
+这里 = os.path.dirname(os.path.abspath(__file__))
 spec = importlib.util.spec_from_file_location(
-    "三号", r"C:/Users/2/Desktop/py_road/projects/rag-assistant/项目三号.py")
+    "三号", os.path.join(这里, "项目三号.py"))
 三号 = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(三号)
 全部块 = 三号.建索引(三号.根目录)[0]
