@@ -14,20 +14,29 @@ def 扫文件(根目录):
 步长 = 块长 - 重叠
 def 切一个文件(路径, 根目录):
     块s = []
-    with open(路径, "r", encoding="utf-8") as f:
-        文本= f.read()
+    try:
+        with open(路径, "r", encoding="utf-8-sig") as f:
+            文本= f.read()
+    except (OSError, UnicodeDecodeError):
+        print("跳过:", 路径)
+        return None
     for 起点 in range(0, len(文本), 步长):
         块s.append({"file":os.path.relpath(路径,根目录), "idx": len(块s), "start":起点, "text":文本[起点:起点 + 块长]})
     return 块s
 def 建索引(根目录):
     thing1 = 扫文件(根目录)
     全部块 = []
+    跳过数 = 0
     for 路径 in thing1:
-        全部块.extend(切一个文件(路径, 根目录))
-    return 全部块, len(thing1)
+        块s = 切一个文件(路径, 根目录)
+        if 块s is None:
+            跳过数 += 1
+            continue
+        全部块.extend(块s)
+    return 全部块, len(thing1), 跳过数
 if __name__ == "__main__":
-    全部块, 文件数 = 建索引(根目录)
-    print(f"文件 {文件数}个 共{len(全部块)}块 块(块长{块长}字, 重叠{重叠}字)")
+    全部块, 文件数, 跳过数 = 建索引(根目录)
+    print(f"文件 {文件数}个（跳过 {跳过数}），共{len(全部块)}块 块(块长{块长}字, 重叠{重叠}字)")
     for 块 in 全部块[0:3]:
         print("-"*60)
         print(f'[{块["idx"]+1}] {块["file"]} 第 {块["idx"]} 块 {len(块["text"])} 字')
