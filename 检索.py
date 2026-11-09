@@ -8,7 +8,6 @@ spec = importlib.util.spec_from_file_location(
 三号 = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(三号)
 全部块 = 三号.建索引(三号.根目录)[0]
-print("载入块数:", len(全部块))
 停用 = {"多少", "一共", "什么", "怎么", "是哪", "哪些", "这个", "可以", "如何", "为什", "么算", "计怎"}
 def 切片段(问题):
     return [问题[i:i+2] for i in range(len(问题) - 1) if 问题[i:i+2] not in 停用]

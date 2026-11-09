@@ -2,12 +2,12 @@ import os
 import importlib.util
 import requests
 这里 =os.path.dirname(os.path.abspath(__file__))
-key = os.environ.get("ZHIPU_API_KEY")
-if not key:
-    print("缺少环境变量 ZHIPU_API_KEY：请先在系统设置，再重开终端/PyCharm")
-    raise SystemExit(1)
 地址 = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
-headers = {"Authorization": "Bearer " + key}
+def 取头部():
+    key = os.environ.get("ZHIPU_API_KEY")
+    if not key:
+        raise RuntimeError("缺少环境变量 ZHIPU_API_KEY：请先在系统设置，再重开终端/PyCharm")
+    return {"Authorization": "Bearer " + key}
 spec = importlib.util.spec_from_file_location(
     "检索模块", os.path.join(这里,"检索.py"))
 检索模块 = importlib.util.module_from_spec(spec)
@@ -28,7 +28,7 @@ def 问模型(问题, top):
         {"role": "user", "content": f"材料：\n{材料}\n\n问题：{问题}"},
     ]
     body = {"model": "glm-4-flash", "messages": messages, "max_tokens": 400, "temperature": 0}
-    resp = requests.post(地址, json=body, headers=headers, timeout=60)
+    resp = requests.post(地址, json=body, headers=取头部(), timeout=60)
     resp.raise_for_status()
     return resp.json()["choices"][0]["message"]["content"]
 if __name__ == "__main__":

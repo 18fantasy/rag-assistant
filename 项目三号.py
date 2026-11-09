@@ -3,7 +3,8 @@ import os
 def 扫文件(根目录):
     thing1 = []
     for root, dirs, files in os.walk(根目录):
-        dirs[:] = [d for d in dirs if  d not in (".git", "__pycache__", ".venv", "_backup", "_drafts", "eval")]
+        跳过 = (".git", "__pycache__", ".venv", "_backup", "_drafts", "eval")
+        dirs[:] = [d for d in dirs if d not in 跳过 and "_旧_" not in d and "作废" not in d]
         for name in files:
             if name.endswith(".md"):
                 thing1.append(os.path.join(root, name))
