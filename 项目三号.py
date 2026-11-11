@@ -3,8 +3,8 @@ import os
 def 扫文件(根目录):
     thing1 = []
     for root, dirs, files in os.walk(根目录):
-        跳过 = (".git", "__pycache__", ".venv", "_backup", "_drafts", "eval")
-        dirs[:] = [d for d in dirs if d not in 跳过 and "_旧_" not in d and "作废" not in d]
+        跳过 = (".git", "__pycache__", ".venv", "_backup", "_drafts", "eval", ".pytest_cache")
+        dirs[:] = [d for d in dirs if d not in 跳过 and "_旧_" not in d and "作废" not in d and "pytest-of" not in d]
         for name in files:
             if name.endswith(".md"):
                 thing1.append(os.path.join(root, name))
@@ -21,7 +21,10 @@ def 切一个文件(路径, 根目录):
         print("跳过:", 路径)
         return None
     for 起点 in range(0, len(文本), 步长):
-        块s.append({"file":os.path.relpath(路径,根目录), "idx": len(块s), "start":起点, "text":文本[起点:起点 + 块长]})
+        块 = 文本[起点:起点 + 块长]
+        if len(块) <= 重叠 and 块s:
+            break
+        块s.append({"file":os.path.relpath(路径,根目录), "idx": len(块s), "start":起点, "text":块})
     return 块s
 def 建索引(根目录):
     thing1 = 扫文件(根目录)

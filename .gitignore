@@ -33,3 +33,7 @@ eval/评测题.md
 
 # 自检脚本（本机工具，不入库）
 自检.py
+
+# pytest 临时目录与缓存
+pytest-of-*/
+.pytest_cache/
