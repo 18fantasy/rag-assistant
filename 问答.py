@@ -1,6 +1,11 @@
 import os
 import importlib.util
 import requests
+import logging
+import time
+logging.basicConfig(level=logging.INFO,
+                    format="%(asctime)s %(levelname)s %(message)s")
+不该重试 = (400, 401, 403, 404)
 这里 =os.path.dirname(os.path.abspath(__file__))
 地址 = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
 def 取头部():
@@ -28,9 +33,29 @@ def 问模型(问题, top):
         {"role": "user", "content": f"材料：\n{材料}\n\n问题：{问题}"},
     ]
     body = {"model": "glm-4-flash", "messages": messages, "max_tokens": 400, "temperature": 0}
-    resp = requests.post(地址, json=body, headers=取头部(), timeout=60)
-    resp.raise_for_status()
-    return resp.json()["choices"][0]["message"]["content"]
+    for 第几次 in range(1, 4):
+        try:
+            resp = requests.post(地址, json=body, headers=取头部(), timeout=60)
+            resp.raise_for_status()
+            return resp.json()["choices"][0]["message"]["content"]
+        except requests.exceptions.HTTPError :
+            if resp.status_code in 不该重试:
+                logging.error("HTTP %s：这个错重试也没用，直接退出", resp.status_code)
+                raise
+            if 第几次 == 3 :
+                logging.error("第 %d 次仍失败：HTTP %s，放弃", 第几次, resp.status_code)
+                raise
+            logging.warning("第 %d 次失败：HTTP %s，%d 秒后重试",
+                            第几次, resp.status_code, 第几次 * 2)
+        # 分两个 except：HTTPError 才有 resp.status_code 能判断该不该重试；
+        # 连接类错误没有 resp，只能一律重试。合并会读到上一轮的旧状态码。
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as 错误:
+            if 第几次 == 3:
+                logging.error("第 %d 次仍失败：%s，放弃", 第几次, type(错误).__name__)
+                raise
+            logging.warning("第 %d 次失败：%s，%d 秒后重试",
+                            第几次, type(错误).__name__, 第几次 * 2)
+        time.sleep(第几次 * 2)
 if __name__ == "__main__":
     问题 = "三号现在有哪些已知问题？"
     top = 检索(问题)
