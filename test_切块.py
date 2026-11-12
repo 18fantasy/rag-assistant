@@ -23,12 +23,12 @@ def test_两个字切出一块(tmp_path):
     结果 = 三号.切一个文件(str(文件), str(tmp_path))
     assert len(结果) == 1
     assert 结果[0]["text"] == "内容"
-def test_三百字切一块(tmp_path):
-    文件 = tmp_path / "三百字.md"
-    文件.write_text("字" * 300, encoding="utf-8")
+def test_根据块长切一块(tmp_path):
+    文件 = tmp_path / "块长.md"
+    文件.write_text("字" * 三号.块长, encoding="utf-8")
     结果 = 三号.切一个文件(str(文件), str(tmp_path))
     assert len(结果) == 1
-    assert len(结果[0]["text"]) == 300
+    assert len(结果[0]["text"]) == 三号.块长
 def test_块内四个字段齐全(tmp_path):
     文件 = tmp_path / "字段.md"
     文件.write_text("字" * 600, encoding="utf-8")
@@ -67,8 +67,9 @@ def test_建索引跳过坏文件(tmp_path):
     assert 跳过数 == 1
     assert len(全部块) >= 1
 def test_切块尾巴超过重叠一个字(tmp_path):
+    长度 = 2 * (三号.块长 - 三号.重叠) + 三号.重叠 + 1
     文件 = tmp_path/"切块.md"
-    文件.write_text("字"*551, encoding="utf-8")
+    文件.write_text("字"*长度, encoding="utf-8")
     结果 = 三号.切一个文件(str(文件), str(tmp_path))
     assert len(结果) == 3
-    assert 结果[-1]["start"] + len(结果[-1]["text"]) == 551
+    assert 结果[-1]["start"] + len(结果[-1]["text"]) == 长度

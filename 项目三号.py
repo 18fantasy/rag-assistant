@@ -1,4 +1,5 @@
 import os
+from 配置 import 块长, 重叠
 根目录 = os.environ.get("RAG_ROOT", r"C:\Users\2\Desktop\py_road")
 def 扫文件(根目录):
     thing1 = []
@@ -9,8 +10,6 @@ def 扫文件(根目录):
             if name.endswith(".md"):
                 thing1.append(os.path.join(root, name))
     return thing1
-块长 = 300
-重叠 = 50
 步长 = 块长 - 重叠
 def 切一个文件(路径, 根目录):
     块s = []
