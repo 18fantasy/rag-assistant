@@ -1,4 +1,6 @@
 import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from 配置 import 块长, 重叠
 根目录 = os.environ.get("RAG_ROOT", r"C:\Users\2\Desktop\py_road")
 def 扫文件(根目录):
