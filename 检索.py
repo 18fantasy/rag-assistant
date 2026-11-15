@@ -1,13 +1,22 @@
 import importlib.util
 import math
 import os
-
+import json
 这里 = os.path.dirname(os.path.abspath(__file__))
 spec = importlib.util.spec_from_file_location(
     "三号", os.path.join(这里, "项目三号.py"))
 三号 = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(三号)
-全部块 = 三号.建索引(三号.根目录)[0]
+索引路径 = os.path.join(这里, "索引.json")
+if os.path.exists(索引路径):
+    with open(索引路径, "r", encoding="utf-8") as f:
+        全部块 = json.load(f)
+        print(f"从落盘索引载入{len(全部块)}块")
+else:
+    全部块 = 三号.建索引(三号.根目录)[0]
+    with open(索引路径, "w", encoding="utf-8") as f:
+        json.dump(全部块, f, ensure_ascii=False)
+    print(f"重建索引{len(全部块)}块，已落盘")
 停用 = {"多少", "一共", "什么", "怎么", "是哪", "哪些", "这个", "可以", "如何", "为什", "么算", "计怎"}
 def 切片段(问题):
     return [问题[i:i+2] for i in range(len(问题) - 1) if 问题[i:i+2] not in 停用]
