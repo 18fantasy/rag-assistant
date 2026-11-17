@@ -11,6 +11,9 @@ __pycache__/
 # 检索产物（能重新生成，不入库）
 *.db
 *.jsonl
+索引.json
+向量.json
+练习.py
 .env
 _backup_*.py
 
