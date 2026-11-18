@@ -16,20 +16,6 @@ if os.path.exists(向量路径):
     print(f"从落盘向量载入{len(全部向量)}个")
 else:
     print(f"向量.json不存在:先跑python向量构建.py")
-def 调embedding(文本列表):
-    resp = requests.post(地址,json = {"model":"embedding-3", "input":文本列表 }, headers = 头部, timeout=60)
-    resp.raise_for_status()
-    return[item["embedding"]for item in resp.json()["data"]]
-def 问题向量(问题):
-    return 调embedding([问题])[0]
-def 余弦(a, b):
-    点积 = sum(x*y for x, y in zip(a, b))
-    模a = sum(x*x for x in a) ** 0.5
-    模b = sum(x*x for x in b) ** 0.5
-    return 点积 / (模a * 模b)
-def 向量打分(问题):
-    q = 问题向量(问题)
-    return [余弦(q, v) for v in 全部向量]
 spec = importlib.util.spec_from_file_location(
     "三号", os.path.join(这里, "项目三号.py"))
 三号 = importlib.util.module_from_spec(spec)
@@ -44,6 +30,20 @@ else:
     with open(索引路径, "w", encoding="utf-8") as f:
         json.dump(全部块, f, ensure_ascii=False)
     print(f"重建索引{len(全部块)}块，已落盘")
+def 调embedding(文本列表):
+    resp = requests.post(地址,json = {"model":"embedding-3", "input":文本列表 }, headers = 头部, timeout=60)
+    resp.raise_for_status()
+    return[item["embedding"]for item in resp.json()["data"]]
+def 问题向量(问题):
+    return 调embedding([问题])[0]
+def 余弦(a, b):
+    点积 = sum(x*y for x, y in zip(a, b))
+    模a = sum(x*x for x in a) ** 0.5
+    模b = sum(x*x for x in b) ** 0.5
+    return 点积 / (模a * 模b)
+def 向量打分(问题):
+    q = 问题向量(问题)
+    return [余弦(q, v) for v in 全部向量]
 停用 = {"多少", "一共", "什么", "怎么", "是哪", "哪些", "这个", "可以", "如何", "为什", "么算", "计怎"}
 def 切片段(问题):
     return [问题[i:i+2] for i in range(len(问题) - 1) if 问题[i:i+2] not in 停用]
